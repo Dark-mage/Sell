@@ -1,17 +1,18 @@
 <template>
  <div class="goods">
-   <div class="menu-warpper">
+   <div class="menu-warpper" ref='menuWarpper'>
       <ul>
-        <li v-for="(menu,index) in goods" :key='index' class="menu-item">
+        <li v-for="(menu,index) in goods" :key='index' @click="selectMenu(index,$event)" 
+        class="menu-item" :class="{'current':currentIndex===index}">
           <span class="text border-1px" >
             <span v-show="menu.type>=0" class="icon" :class="claMap[menu.type]"></span>{{menu.name}}
           </span>
         </li>
       </ul>
    </div>
-   <div class="foods-warpper">
+   <div class="foods-warpper" ref='foodsWarpper'>
      <ul>
-       <li v-for="(menu,index) in goods" :key='index' class="food-list">
+       <li v-for="(menu,index) in goods" :key='index' class="food-list food-list-hook">
           <h2 class="title">{{menu.name}}</h2>
           <ul>
             <li v-for="(food,i) in menu.foods" :key='i' class="food-item border-1px">
@@ -27,25 +28,62 @@
                 <div class="price">
                   <span class="now">¥{{food.price}}</span><span v-show="food.oldPrice" class="oldPrice">¥{{food.oldPrice}}</span>
                 </div>
+                <div class="cartcontrol-warpper">
+                  <cartControl :food='food'></cartControl>
+                </div>
               </div>
             </li>
           </ul>
        </li>
      </ul>
    </div>
+   <shopcar :deliveryPrice='seller.deliveryPrice' :minPrice='seller.minPrice' :selectFoods='selectFoods'></shopcar>
  </div>
 </template>
 
 <script type='text/ecmascript-6'>
+import BScroll from 'better-scroll'
+import shopcar from '../shopcar/shopcar'
+import cartControl from '../cartControl/cartControl'
 const ERR_NO = 0
  export default {
    data () {
      return {
-       goods: {}
+       goods: [],
+       listHeight: [],
+       scrollY: 0
+     }
+   },
+   props: {
+     seller: {
+       Object
+     }
+   },
+   computed: {
+     currentIndex () {
+       for (let i = 0; i < this.listHeight.length; i++) {
+         let height1 = this.listHeight[i]
+         let height2 = this.listHeight[i + 1]
+         if (!height2 || (height1 <= this.scrollY && this.scrollY > height2)) {
+           return i
+         }
+       }
+        return 0
+     },
+     selectFoods () {
+       let foods = []
+       this.goods.forEach((good) => {
+         good.foods.forEach((food) => {
+           if (food.count) {
+             foods.push(food)
+           }
+         })
+       })
+       return foods
      }
    },
    components: {
-
+    shopcar, cartControl
    },
    created () {
      this.claMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee']
@@ -53,8 +91,44 @@ const ERR_NO = 0
         res = res.body
         if (res.errno === ERR_NO) {
           this.goods = res.data
-      }
+          this.$nextTick(() => {
+            this.scrollInit()
+            this.calcHeight()
+          })
+        }
      })
+   },
+   methods: {
+      selectMenu(index, event) {
+        if (!event._constructed) {
+          return
+        }
+        let foodList = this.$refs.foodsWarpper.getElementsByClassName('food-list-hook')
+        let el = foodList[index]
+        this.foodsScroll.scrollToElement(el, 300)
+      },
+      scrollInit() {
+        this.meunScroll = new BScroll(this.$refs.menuWarpper, {
+          click: true
+        })
+        this.foodsScroll = new BScroll(this.$refs.foodsWarpper, {
+          click: true,
+          probeType: 3
+        })
+        this.foodsScroll.on('scroll', (pos) => {
+          this.scrollY = Math.abs(Math.round(pos.y))
+        })
+      },
+      calcHeight() {
+        let foodList = this.$refs.foodsWarpper.getElementsByClassName('food-list-hook')
+        let height = 0
+        this.listHeight.push(height)
+        for (let i = 0; i < foodList; i++) {
+          let item = foodList[i]
+          height += item.clientHeight
+          this.listHeight.push(height)
+        }
+      }
    }
  }
 </script>
@@ -82,6 +156,13 @@ const ERR_NO = 0
         &:after
           width :70%
           left :15%
+        &.current
+          position : relative
+          margin-top : -1px
+          background :#fff
+          z-index : 10
+          font-weight:700
+          border-none()   
         .icon
           display :inline-block
           width:12px
@@ -132,7 +213,7 @@ const ERR_NO = 0
           .description,.extra
             font-size :10px
             color:rgb(147,153,159)
-            line-height :10px
+            line-height :12px
           .description
             margin-bottom :8px
           .extra  
@@ -149,4 +230,8 @@ const ERR_NO = 0
               text-decoration: line-through
               font-size :10px
               color:rgb(147,153,159)
+          .cartcontrol-warpper
+              position :absolute
+              right :0
+              bottom: 18px
 </style>
