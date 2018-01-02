@@ -233,5 +233,5 @@ const ERR_NO = 0
           .cartcontrol-warpper
               position :absolute
               right :0
-              bottom: 18px
+              bottom: 12px
 </style>
