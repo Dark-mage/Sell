@@ -22,6 +22,11 @@ export default new Router({
       path: '/seller',
       name: 'seller',
       component: Seller
+    },
+    {
+      path: '/',
+      name: 'goods',
+      component: Goods
     }
   ],
   linkActiveClass: 'active'
