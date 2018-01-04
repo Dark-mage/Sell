@@ -242,6 +242,6 @@ export default {
             color rgb(147, 153, 159)
         .cartcontrol-warpper
           position absolute
-          right 0
-          bottom 12px
+          right: 0
+          bottom: 12px
 </style>
