@@ -15,7 +15,7 @@
        <li v-for="(menu,index) in goods" :key='index' class="food-list food-list-hook">
           <h2 class="title">{{menu.name}}</h2>
           <ul>
-            <li v-for="(food,i) in menu.foods" :key='i' class="food-item border-1px">
+            <li v-for="(food,i) in menu.foods" :key='i' class="food-item border-1px"  @click="selectFood(food,$event)">
               <div class="icon">
                 <img :src="food.icon" alt="" width="57" height="57">
               </div>
@@ -38,6 +38,9 @@
      </ul>
    </div>
    <shopcar ref="shopcar" :deliveryPrice='seller.deliveryPrice' :minPrice='seller.minPrice' :selectFoods='selectFoods'></shopcar>
+   <div class="food-warpper">
+     <food :food="selectedfood" ref="food"></food>
+   </div>
  </div>
 </template>
 
@@ -45,13 +48,15 @@
 import BScroll from 'better-scroll'
 import shopcar from '../shopcar/shopcar'
 import cartControl from '../cartControl/cartControl'
+import food from '../food/food'
 const ERR_NO = 0
 export default {
   data() {
     return {
       goods: [],
       listHeight: [],
-      scrollY: 0
+      scrollY: 0,
+      selectedfood: {}
     }
   },
   props: {
@@ -84,7 +89,8 @@ export default {
   },
   components: {
     shopcar,
-    cartControl
+    cartControl,
+    food
   },
   created() {
     this.claMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee']
@@ -138,6 +144,13 @@ export default {
       this.$nextTick(() => {
         this.$refs['shopcar'].drop(el)
       })
+    },
+    selectFood(food, event) {
+      if (!event._constructed) {
+        return
+      }
+      this.selectedfood = food
+      this.$refs.food.show()
     }
   }
 }
@@ -242,6 +255,6 @@ export default {
             color rgb(147, 153, 159)
         .cartcontrol-warpper
           position absolute
-          right: 0
-          bottom: 12px
+          right 0
+          bottom 12px
 </style>
