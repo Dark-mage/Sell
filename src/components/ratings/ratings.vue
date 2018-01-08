@@ -81,14 +81,12 @@ export default {
       this.onlyContent = onlyContent
       this.$nextTick(() => {
         this.scroll.refresh()
-        console.log('contentToggle+2')
       })
     },
     ratingtypeSelect(type) {
       this.selectType = type
       this.$nextTick(() => {
         this.scroll.refresh()
-        console.log('ratingtypeSelect+2')
       })
     },
     showRating(rateType, text) {
