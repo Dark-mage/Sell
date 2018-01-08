@@ -45,7 +45,7 @@
                             <span class="name">{{rating.username}}</span>
                             <img class="avatar" :src="rating.avatar" alt="" width="12" height="12">
                         </div>
-                        <div class="time">{{rating.rateTime}}</div>
+                        <div class="time">{{rating.rateTime | formatDate}}</div>
                         <div class="rating-content">
                             <i :class="{'icon-thumb_up':0===rating.rateType,'icon-thumb_down':1===rating.rateType}"></i>
                             <span class="text" v-show="rating.text">{{rating.text}}</span>
@@ -64,6 +64,7 @@
 <script type='text/ecmascript-6'>
 import Vue from 'vue'
 import BScroll from 'better-scroll'
+import { formatDate } from '../../common/js/date'
 import cartControl from '../cartControl/cartControl'
 import split from '../split/split'
 import ratingselect from '../ratingselect/ratingselect'
@@ -84,6 +85,12 @@ export default {
   props: {
     food: {
       type: Object
+    }
+  },
+  filters: {
+    formatDate(time) {
+      let date = new Date(time)
+      return formatDate(date, 'yyyy-MM-dd hh:mm')
     }
   },
   methods: {

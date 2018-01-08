@@ -67,11 +67,11 @@ export default {
                 background-size: 15px 15px
                 &:last-child
                     margin-right: 0
-                &.on
+                &.onStar
                     bg-image('star36_on')
-                &.half
+                &.halfStar
                     bg-image('star36_half')
-                &.off
+                &.offStar
                     bg-image('star36_off')
         &.star-24
             .star-item
@@ -81,10 +81,10 @@ export default {
                 background-size: 10px 10px
                 &:last-child
                     margin-right: 0
-                &.on
+                &.onStar
                     bg-image('star24_on')
-                &.half
+                &.halfStar
                     bg-image('star24_half')
-                &.off
+                &.offStar
                     bg-image('star24_off')   
 </style>
