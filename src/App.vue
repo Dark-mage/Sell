@@ -15,7 +15,9 @@
       </div>
     </div>
     <div class="content">
-      <router-view :seller="seller"/>
+        <router-view :seller="seller"/>
+      <!-- <keep-alive> -->
+      <!-- </keep-alive> -->
     </div>
   </div>
 </template>

@@ -1,5 +1,5 @@
 <template>
- <div class="ratings-warpper" ref="ratingsWarpper">
+ <div class="ratings-view-warpper" ref="ratingsWarpper">
    <div class="bs-content">
      <div class="ratings-header">
        <div class="header-left">
@@ -110,13 +110,11 @@ export default {
       res = res.body
       if (res.errno === ERR_NO) {
         this.ratings = res.data
-        if (!this.scroll) {
+        this.$nextTick(() => {
           this.scroll = new BScroll(this.$refs.ratingsWarpper, {
             click: true
           })
-        } else {
-          this.scroll.refresh()
-        }
+        })
       }
     })
   },
@@ -129,112 +127,114 @@ export default {
 </script>
 
 <style lang='stylus' rel='stylesheet/stylus'>
-  @import '../../common/stylus/mixin.styl'
-  .ratings-header
-    display :flex
-    padding :18px 0
-    .header-left
-      flex:1
-      text-align :center
-      font-size :12px
-      color:rgb(7,17,27)  
-      .score
-        font-size :24px
-        color:rgb(255,153,0)
-        line-height :28px
-        margin-bottom :6px
-      .rankRate
-        margin-top :8px
-        padding-bottom :6px
-        line-height :10px
-        color:rgb(147,153,159)
-    .header-right
-      width :237px
-      box-sizing :border-box
-      padding:0 24px
-      .score-content
-        line-height :18px
-        display :flex
-        align-content :center
-        .text
-          font-size :12px
-          color:rgb(7,17,27)
-          margin-bottom :8px
-          margin-right :12px
-          &:last-children
-            margin-bottom :0
-        .score_text
-            color:rgb(255,153,0)
-            font-size :12px
-            margin-left :12px     
-        .deliveryTime
-          color:rgb(147,153,159)
-          font-size :12px
-  .ratingselect-warpper
-    padding: 0 18px 18px 18px
-    border-1px(rgb(147,153,159))
-  .ratings-warpper
-    padding: 0 18px  
-    .rating-item
-      position :relative    
-      font-size :10px
-      color:rgb(147,153,159)
-      padding: 18px 0 18px 48px
-      border-1px(rgba(7,17,27,0.1))
-      .avatar
-        position :absolute
-        left :0px
-        top:18px
-        width :28px
-        height :28px
-        border-radius :50%
-        overflow: hidden
-      .user-warppper
-        margin-bottom :4px
-        .username , .rateTime
-          display :inline-block
-          line-height :12px
-          width :50%
-        .username
-          color:rgb(7,17,27)
-        .rateTime
-          text-align :right
-      .rating-star-warpper
-          display:flex
-          align-items :center
-          margin-bottom :6px
+@import '../../common/stylus/mixin.styl'
+.ratings-view-warpper
+  overflow-y: hidden
+  .bs-content
+    height :100%
+    .ratings-header
+      display flex
+      padding 18px 0
+      .header-left
+        flex 1
+        text-align center
+        font-size 12px
+        color rgb(7, 17, 27)
+        .score
+          font-size 24px
+          color rgb(255, 153, 0)
+          line-height 28px
+          margin-bottom 6px
+        .rankRate
+          margin-top 8px
+          padding-bottom 6px
+          line-height 10px
+          color rgb(147, 153, 159)
+      .header-right
+        width 237px
+        box-sizing border-box
+        padding 0 24px
+        .score-content
+          line-height 18px
+          display flex
+          align-content center
+          .text
+            font-size 12px
+            color rgb(7, 17, 27)
+            margin-bottom 8px
+            margin-right 12px
+            &:last-children
+              margin-bottom 0
+          .score_text
+            color rgb(255, 153, 0)
+            font-size 12px
+            margin-left 12px
           .deliveryTime
-            margin-left :6px
-            line-height :12px
-      .text
-        color:rgb(7,17,27)
-        font-size :12px
-        line-height :18px
-        margin-bottom 8px
-      .recommend-warpper
-      margin-bottom :18px
-      &:last-child
-        margin-bottom :0
-      .icon-thumb_up,.icon-thumb_down
-        font-size :12px
-        line-height :16px
-      .icon-thumb_up
-        color:rgb(0,160,220)  
-      .icon-thumb_down
-        color:rgb(183,187,191)
-      .recommend
-        display :inline-block        
-        margin-left :8px
-        padding : 0 6px
-        border:1px solid rgba(7,17,27,0.1)
-        border-radius :2px
-        background-color :#fff
-        color:rgb(147,153,159)
-        line-height :16px
-        font-size :9px
-        margin-bottom: 8px 
-    .no-rating
-      padding 16px 0
-      font-size 12px
-      color rgb(147, 153, 159)      
+            color rgb(147, 153, 159)
+            font-size 12px
+    .ratingselect-warpper
+      padding 0 18px 18px 18px
+      border-1px(rgb(147, 153, 159))
+    .ratings-warpper
+      padding 0 18px
+      .rating-item
+        position relative
+        font-size 10px
+        color rgb(147, 153, 159)
+        padding 18px 0 18px 48px
+        border-1px(rgba(7, 17, 27, 0.1))
+        .avatar
+          position absolute
+          left 0px
+          top 18px
+          width 28px
+          height 28px
+          border-radius 50%
+          overflow hidden
+        .user-warppper
+          margin-bottom 4px
+          .username, .rateTime
+            display inline-block
+            line-height 12px
+            width 50%
+          .username
+            color rgb(7, 17, 27)
+          .rateTime
+            text-align right
+        .rating-star-warpper
+          display flex
+          align-items center
+          margin-bottom 6px
+          .deliveryTime
+            margin-left 6px
+            line-height 12px
+        .text
+          color rgb(7, 17, 27)
+          font-size 12px
+          line-height 18px
+          margin-bottom 8px
+        .recommend-warpper, margin-bottom :18px, &:last-child
+          margin-bottom 0
+        .icon-thumb_up, .icon-thumb_down
+          font-size 12px
+          line-height 16px
+        .icon-thumb_up
+          color rgb(0, 160, 220)
+        .icon-thumb_down
+          color rgb(183, 187, 191)
+        .recommend
+          display inline-block
+          margin-left 8px
+          padding 0 6px
+          border 1px solid rgba(7, 17, 27, 0.1)
+          border-radius 2px
+          background-color #fff
+          color rgb(147, 153, 159)
+          line-height 16px
+          font-size 9px
+          margin-bottom 8px
+      .no-rating
+        padding 16px 0
+        font-size 12px
+        color rgb(147, 153, 159)
 </style>
