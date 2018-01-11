@@ -129,9 +129,12 @@ export default {
 <style lang='stylus' rel='stylesheet/stylus'>
 @import '../../common/stylus/mixin.styl'
 .ratings-view-warpper
-  overflow-y: hidden
+  position :absolute
+  top 176px
+  bottom 46px
+  width 100%
+  overflow hidden
   .bs-content
-    height :100%
     .ratings-header
       display flex
       padding 18px 0
